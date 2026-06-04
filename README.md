@@ -1,17 +1,68 @@
-# contact
+# Quiz Flutter
 
-A new Flutter project.
+Application mobile Flutter connectée à une API Laravel. Elle permet de se connecter, lancer un quiz par thème ou aléatoire, consulter son score, le classement et l'historique des quiz terminés.
 
-## Getting Started
+## Fonctionnalités
 
-This project is a starting point for a Flutter application.
+- Connexion et inscription utilisateur
+- Tableau de bord avec score personnel, meilleur score, moyenne et classement
+- Lancement d'un quiz aléatoire ou par thème
+- Choix du nombre de questions
+- Correction détaillée après validation
+- Historique des anciens quiz
+- Images personnalisées pour les thèmes
 
-A few resources to get you started if this is your first Flutter project:
+## Prérequis
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- Flutter installé sur la machine
+- Un simulateur, un appareil mobile ou la cible macOS activée
+- L'API Laravel accessible depuis l'application
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Installation
+
+```bash
+flutter pub get
+```
+
+## Configuration de l'API
+
+L'URL de l'API se trouve dans le fichier `.env` :
+
+```env
+API_BASE_URL=https://exemple.ngrok-free.app/api
+```
+
+Le fichier est chargé au démarrage avec `flutter_dotenv`, puis transmis au client HTTP de l'application.
+
+## Lancer l'application
+
+Sur macOS :
+
+```bash
+flutter run -d macos
+```
+
+Pour voir les appareils disponibles :
+
+```bash
+flutter devices
+```
+
+## Tests et analyse
+
+```bash
+flutter analyze
+flutter test
+```
+
+## Organisation du code
+
+- `lib/screens/` : les écrans de l'application
+- `lib/services/` : appels API et logique d'authentification
+- `lib/models/` : objets utilisés par les écrans et services
+- `lib/widgets/` : composants réutilisables
+- `assets/themes/` : images affichées sur les cartes de thèmes
+
+## Images des thèmes
+
+Les images sont placées dans `assets/themes/`. Le fichier `theme_selection_screen.dart` associe les labels renvoyés par l'API aux images disponibles, avec une icône de secours si aucune image ne correspond.
