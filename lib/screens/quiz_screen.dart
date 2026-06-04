@@ -224,6 +224,11 @@ class _QuestionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final options = question.options;
+    final answer = question.answer;
+    final hasSelection = selectedAnswer != null && selectedAnswer!.isNotEmpty;
+    final answerKnown = answer != null && answer.isNotEmpty;
+    final selectedIsCorrect =
+        hasSelection && answerKnown && _sameAnswer(selectedAnswer!, answer);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -292,14 +297,10 @@ class _QuestionCard extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                               side: BorderSide(
-                                color: selectedAnswer == option
-                                    ? Theme.of(context).colorScheme.primary
-                                    : const Color(0xFFE1E7EF),
+                                color: _optionBorderColor(context, option),
                               ),
                             ),
-                            tileColor: selectedAnswer == option
-                                ? Theme.of(context).colorScheme.primaryContainer
-                                : Colors.white,
+                            tileColor: _optionColor(context, option),
                             title: Text(option),
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 8,
@@ -310,8 +311,98 @@ class _QuestionCard extends StatelessWidget {
                       .toList(),
                 ),
               ),
+            if (hasSelection && answerKnown) ...[
+              const SizedBox(height: 4),
+              _AnswerFeedback(correct: selectedIsCorrect, answer: answer),
+            ],
           ],
         ),
+      ),
+    );
+  }
+
+  Color _optionBorderColor(BuildContext context, String option) {
+    if (selectedAnswer == null) {
+      return const Color(0xFFE1E7EF);
+    }
+
+    if (question.answer == null || question.answer!.isEmpty) {
+      return selectedAnswer == option
+          ? Theme.of(context).colorScheme.primary
+          : const Color(0xFFE1E7EF);
+    }
+
+    if (_sameAnswer(option, question.answer!)) {
+      return const Color(0xFF16A34A);
+    }
+
+    if (selectedAnswer == option) {
+      return const Color(0xFFDC2626);
+    }
+
+    return const Color(0xFFE1E7EF);
+  }
+
+  Color _optionColor(BuildContext context, String option) {
+    if (selectedAnswer == null) {
+      return Colors.white;
+    }
+
+    if (question.answer == null || question.answer!.isEmpty) {
+      return selectedAnswer == option
+          ? Theme.of(context).colorScheme.primaryContainer
+          : Colors.white;
+    }
+
+    if (_sameAnswer(option, question.answer!)) {
+      return const Color(0xFFEAF7EF);
+    }
+
+    if (selectedAnswer == option) {
+      return const Color(0xFFFDECEC);
+    }
+
+    return Colors.white;
+  }
+
+  bool _sameAnswer(String first, String second) {
+    return first.trim().toLowerCase() == second.trim().toLowerCase();
+  }
+}
+
+class _AnswerFeedback extends StatelessWidget {
+  const _AnswerFeedback({required this.correct, required this.answer});
+
+  final bool correct;
+  final String answer;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = correct ? const Color(0xFF16A34A) : const Color(0xFFDC2626);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        border: Border.all(color: color.withValues(alpha: 0.28)),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            correct ? Icons.check_circle_outline : Icons.info_outline,
+            color: color,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              correct ? 'Bonne réponse.' : 'Bonne réponse : $answer',
+              style: TextStyle(color: color, fontWeight: FontWeight.w700),
+            ),
+          ),
+        ],
       ),
     );
   }

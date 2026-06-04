@@ -61,7 +61,12 @@ class Question {
   }
 
   static String? _answer(Map<String, dynamic> json) {
-    final directAnswer = json['answer'] ?? json['correct_answer'];
+    final directAnswer =
+        json['answer'] ??
+        json['correct_answer'] ??
+        json['correctAnswer'] ??
+        json['right_answer'] ??
+        json['rightAnswer'];
     if (directAnswer != null) {
       return directAnswer.toString();
     }
