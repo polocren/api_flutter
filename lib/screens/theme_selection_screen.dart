@@ -268,6 +268,7 @@ class _ThemeCard extends StatelessWidget {
   }
 
   _ThemeVisual _themeVisual(String label) {
+    // Les thèmes viennent de l'API, on se base donc sur le libellé plutôt que sur un id fixe.
     final normalized = label
         .toLowerCase()
         .replaceAll(RegExp('[éèêë]'), 'e')

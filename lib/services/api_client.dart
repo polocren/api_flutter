@@ -61,6 +61,7 @@ class ApiClient {
       _ => throw ArgumentError('Méthode HTTP non supportée: $method'),
     };
 
+    // L'API renvoie toujours une enveloppe { success, data, message, errors }.
     final envelope = _decodeEnvelope(response.body);
     final success = envelope['success'] == true;
 

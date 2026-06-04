@@ -20,6 +20,7 @@ class Quiz {
   int get pointsPerCorrectAnswer => isRandom ? 2 : 1;
 
   int? get computedScore {
+    // le back peut déjà renvoyer le score final.
     if (questions.any((question) => question.isCorrect == null)) {
       return finalScore;
     }

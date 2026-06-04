@@ -322,6 +322,7 @@ class _QuestionCard extends StatelessWidget {
   }
 
   Color _optionBorderColor(BuildContext context, String option) {
+    // Dès qu'une réponse est choisie, on met la correction.
     if (selectedAnswer == null) {
       return const Color(0xFFE1E7EF);
     }

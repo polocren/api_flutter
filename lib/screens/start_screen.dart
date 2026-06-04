@@ -26,6 +26,7 @@ class _StartScreenState extends State<StartScreen> {
   }
 
   Future<void> _loadSession() async {
+    // Au lancement, on évite un appel /me si aucun token n'est stocké.
     final token = await AppScope.of(
       context,
     ).authService.tokenStorage.readToken();

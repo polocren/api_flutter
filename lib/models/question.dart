@@ -34,6 +34,7 @@ class Question {
   }
 
   static List<String> _parseOptions(Map<String, dynamic> json) {
+    // Les noms ont changé plusieurs fois côté API, donc o accepte les anciens formats.
     final value =
         json['proposals'] ??
         json['options'] ??
@@ -61,6 +62,7 @@ class Question {
   }
 
   static String? _answer(Map<String, dynamic> json) {
+    // Même idée ici : on garde une lecture souple de la bonne réponse.
     final directAnswer =
         json['answer'] ??
         json['correct_answer'] ??

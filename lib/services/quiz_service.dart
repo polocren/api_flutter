@@ -35,6 +35,7 @@ class QuizService {
     required int quizId,
     required Map<int, String> selectedAnswers,
   }) async {
+    // Le back attend une liste, alors que l'écran manipule une map question -> réponse.
     final data = await apiClient.post(
       '/quiz/quizzes/$quizId/submit',
       authenticated: true,
@@ -67,6 +68,7 @@ class QuizService {
   }
 
   List<Map<String, dynamic>> _list(Object? data) {
+    // Certains endpoints renvoient directement une liste, d'autres paginent dans "items".
     if (data is List) {
       return data
           .whereType<Map>()
